@@ -1,6 +1,7 @@
 import SwiftUI
 
 public enum Activity: Codable {
+    case image(ImageContent)
     case video(VideoContent)
     case audio(AudioContent)
     case read(WrittenContent)
@@ -9,6 +10,8 @@ public enum Activity: Codable {
     public init(from decoder: Decoder) throws {
         if let read = try? WrittenContent(from: decoder) {
             self = .read(read)
+        } else if let image = try? ImageContent(from: decoder) {
+            self = .image(image)
         } else if let video = try? VideoContent(from: decoder) {
             self = .video(video)
         } else if let audio = try? AudioContent(from: decoder) {
@@ -22,6 +25,8 @@ public enum Activity: Codable {
 
     public func encode(to encoder: Encoder) throws {
         switch self {
+        case .image(let image):
+            try image.encode(to: encoder)
         case .video(let videoContent):
             try videoContent.encode(to: encoder)
         case .audio(let audioContent):

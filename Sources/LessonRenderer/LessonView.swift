@@ -13,6 +13,23 @@ public struct LessonView: View {
             LazyVStack(spacing: 20) {
                 ForEach(lesson.allActivities(), id: \.0) { (offset, activity) in
                     switch activity {
+                    case .image(let image):
+                        VStack {
+                            AsyncImage(url: image.imageUrl) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .cornerRadius(8)
+                                    .shadow(color: .primary.opacity(0.4), radius: 5)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            if !image.details.isEmpty {
+                                Text(image.detailsMarkdown()) .textSelection(.enabled)
+                                    .padding()
+
+                            }
+                        }
                     case .audio(let audio):
                         VStack {
                             AudioView(url: audio.audioUrl, shouldPlayAutomatically: audio.shouldAutoPlay)
@@ -27,7 +44,8 @@ public struct LessonView: View {
                                 }
                                 .padding(.bottom)
                                 
-                                Text(audio.transcrptionMarkdown())
+                                Text(audio.transcrptionMarkdown())            .textSelection(.enabled)
+
                             }
                         }
                     case .video(let video):
@@ -49,13 +67,16 @@ public struct LessonView: View {
                                 .padding(.bottom)
                                 
                                 Text(video.transcrptionMarkdown())
+                                    .textSelection(.enabled)
+
                             }
                         }
                     case .sectionHeading(let heading):
                         heading.toHeaderView()
                             .padding(.top, 42)
+                            .textSelection(.enabled)
                     case .read(let content):
-                        Text(content.toMarkdown())
+                        Text(content.toMarkdown())            .textSelection(.enabled)
                     }
                 }
             }
@@ -84,7 +105,7 @@ extension Lesson {
                 .video(.init(
                     url: URL(string: "https://media.developer.dolby.com/DDP/MP4_HPL40_30fps_channel_id_71.mp4")!,
                     transcription: "*This* is a **video** from [Dolby](https://developer.dolby.com/tools-media/sample-media/video-streams/hd-video-streams) I'm using to test things out",
-                    shouldAutoPlay: true
+                    shouldAutoPlay: false
                 )),
                 .sectionHeading(.init(heading: "Now **read** *this*", size: .medium)),
                 .read(.init(content: """
@@ -107,16 +128,17 @@ Judex desinit aut cervus frustrat vel corvus vescitur turtur atque piscator roga
                     transcription: "*This* is a **video** from [Dolby](https://developer.dolby.com/tools-media/sample-media/video-streams/hd-video-streams) I'm using to test things out",
                     shouldAutoPlay: false
                 )),
+                .image(.init(url: URL(string: "https://www.picserver.org/assets/library/2020-10-31/originals/example1.jpg")!, details: "This is a bit of info about that image"))
             ]
         )
     )
     .tint(.red)
-    .background {
-        LinearGradient(stops: [
-            .init(color: .black, location: .zero),
-            .init(color: .blue, location: 1)
-        ], startPoint: .topLeading, endPoint: .bottomTrailing)
-        .scaleEffect(3)
-        .edgesIgnoringSafeArea(.all)
-    }
+//    .background {
+//        LinearGradient(stops: [
+//            .init(color: .black, location: .zero),
+//            .init(color: .blue, location: 1)
+//        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+//        .scaleEffect(3)
+//        .edgesIgnoringSafeArea(.all)
+//    }
 }
