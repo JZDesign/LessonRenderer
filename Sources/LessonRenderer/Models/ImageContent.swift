@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ImageContent: Codable {
+public struct ImageContent: Codable, Equatable {
     public let imageUrl: URL
     public let details: String
 

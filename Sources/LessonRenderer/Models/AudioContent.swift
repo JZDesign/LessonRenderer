@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct AudioContent: Codable {
+public struct AudioContent: Codable, Equatable {
     public let audioUrl: URL
     public let transcription: String
     public let shouldAutoPlay: Bool

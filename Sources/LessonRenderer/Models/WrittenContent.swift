@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct WrittenContent: Codable {
+public struct WrittenContent: Codable, Equatable {
     public let content: String
     
     public init(content: String) {

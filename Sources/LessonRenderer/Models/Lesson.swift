@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct Lesson: Codable, Identifiable {
+public struct Lesson: Codable, Identifiable, Hashable, Equatable {
     public let id: UUID
     public let title: String
     public let activities: [Activity]
@@ -9,5 +9,10 @@ public struct Lesson: Codable, Identifiable {
         self.id = id
         self.title = title
         self.activities = activities
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(self.title)
     }
 }

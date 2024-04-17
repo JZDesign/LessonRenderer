@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct Heading: Codable {
+public struct Heading: Codable, Equatable {
     public let heading: String
     public let size: Size
 

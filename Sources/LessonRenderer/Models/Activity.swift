@@ -1,6 +1,6 @@
 import SwiftUI
 
-public enum Activity: Codable {
+public enum Activity: Codable, Equatable {
     case image(ImageContent)
     case video(VideoContent)
     case audio(AudioContent)
@@ -36,6 +36,24 @@ public enum Activity: Codable {
         case .sectionHeading(let heading):
             try heading.encode(to: encoder)
         }
+    }
+    
+    public static func == (lhs: Activity, rhs: Activity) -> Bool {
+        switch (lhs, rhs) {
+        case (.image(let image1), .image(let image2)):
+            return image1 == image2
+        case (.video(let video1), .video(let video2)):
+            return video1 == video2
+        case (.audio(let audio1), .audio(let audio2)):
+            return audio1 == audio2
+        case (.read(let read1), .read(let read2)):
+            return read1 == read2
+        case (.sectionHeading(let sectionHeading1), .sectionHeading(let sectionHeading2)):
+            return sectionHeading1 == sectionHeading2
+        default:
+            break
+        }
+        return false
     }
 }
 
